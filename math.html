@@ -40,23 +40,32 @@
       f = parseFloat(f);
       if (f===f) {
         _x = f;
-        setVariables();
-        evaluate();
+      } else {
+        _x = undefined;
       }
+      variables.x = _x;
+      evaluate();
+      showVariables();
     }
     function setY(f){
       f = parseFloat(f);
       if (f===f) {
         _y = f;
-        setVariables();
+      } else {
+        _y = undefined;
       }
+      variables.y = _y;
+      showVariables();
     }
     function setZ(f){
       f = parseFloat(f);
       if (f===f) {
         _z = f;
-        setVariables();
+      } else {
+        _z = undefined;
       }
+      variables.z = _z;
+      showVariables();
     }
     function setEquation(s){
       try {
@@ -85,8 +94,7 @@
         }
       }
     }
-    function setVariables(){
-      variables = {x:_x, y:_y, z:_z};
+    function showVariables(){
       document.getElementById("variables").innerHTML = "x: "+_x+",<br />"+"y: "+_y+",<br />"+"z: "+_z;
     }
     function clear() {

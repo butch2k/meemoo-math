@@ -72,7 +72,10 @@
         expression = Parser.parse(s);
         // For some reason immediate evaluate() without values causes this to throw 
         window.setTimeout(evaluate, 500);
-        document.getElementById("expression").innerHTML = '<span title="'+expression.toString()+'">' + s + '</span>' + " =";
+        var span = document.createElement('span');
+        span.setAttribute('title', expression.toString());
+        span.appendChild( document.createTextNode(s + " =") ); 
+        document.getElementById("expression").innerHTML = span.outerHTML;
       } catch (e) {
         console.log(e);
         expression = null;

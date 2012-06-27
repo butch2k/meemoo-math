@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>math</title>
+  <meta name="author" content="silentmatt + forresto">
+  <meta name="description" content="arbitrary math equation evaluator" />
+  
+  <script type="text/javascript" src="http://meemoo.org/meemoo/v1/meemoo-min.js"></script>
+  <script type="text/javascript" src="parser.min.js"></script>
+  
+  <style type="text/css">
+    html, body {
+      margin: 0;
+      padding:0;
+    }
+    body {
+      margin: 10px;
+      font-family: 'Nova Flat', Monaco, monospace;
+      font-size: 15px;
+    }
+    #variables {
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="variables">{}</div>
+  <div id="expression">...</div>
+  <div>=</div>
+  <div id="solution">...</div>
+  
+  <script type="text/javascript">
+
+    var expression, _x, _y, _z, solution;
+    var variables = {};
+
+    function setX(f){
+      f = parseFloat(f);
+      if (f===f) {
+        _x = f;
+        setVariables();
+        evaluate();
+      }
+    }
+    function setY(f){
+      f = parseFloat(f);
+      if (f===f) {
+        _y = f;
+        setVariables();
+      }
+    }
+    function setZ(f){
+      f = parseFloat(f);
+      if (f===f) {
+        _z = f;
+        setVariables();
+      }
+    }
+    function setEquation(s){
+      try {
+        expression = Parser.parse(s);
+        // For some reason immediate evaluate() without values causes this to throw 
+        window.setTimeout(evaluate, 500);
+        document.getElementById("expression").innerHTML = expression.toString();
+      } catch (e) {
+        console.log(e);
+        expression = null;
+        document.getElementById("expression").innerHTML = "error parsing equation";
+        clear();
+      }
+    }
+    function evaluate(){
+      if (expression) {
+        try {
+          solution = expression.evaluate(variables);
+          if (solution===solution) {
+            // not NaN
+            Meemoo.send("equals", solution );
+          }
+          document.getElementById("solution").innerHTML = solution;
+        } catch (e) {
+          document.getElementById("solution").innerHTML = "error evaluating; got your variables?";
+        }
+      }
+    }
+    function setVariables(){
+      variables = {x:_x, y:_y, z:_z};
+      document.getElementById("variables").innerHTML = "x: "+_x+",<br />"+"y: "+_y+",<br />"+"z: "+_z;
+    }
+    function clear() {
+      document.getElementById("solution").innerHTML = "...";
+    }
+
+    Meemoo
+      .setInfo({
+        title: "math",
+        author: "silentmatt + forresto",
+        description: "arbitrary math equation evaluator"
+      })
+      .addInputs({
+        x: {
+          action: setX,
+          type: "float",
+          description: "x for the equation. this input is hot, which means that evaluate will automatically be called."
+        },
+        y: {
+          action: setY,
+          type: "float",
+          description: "this input is cold, which means you have to also hit evaluate"
+        },
+        z: {
+          action: setZ,
+          type: "float",
+          description: "this input is cold, which means you have to also hit evaluate"
+        },
+        equation: {
+          action: setEquation,
+          type: "string",
+          description: "f(x,y,z) (function calls), ^ (exponentiation), *, /, and % (multiplication, division, and remainder), and finally +, -, and || (addition, subtraction, and string concatenation) ... sin(x), cos(x), tan(x), asin(x), acos(x), atan(x), sqrt(x), log(x), abs(x), ceil(x), floor(x), round(x), exp(x) ... random(n), fac(n), min(a,b,…), max(a,b,…), pyt(a, b), pow(x, y), atan2(y, x)"
+        },
+        evaluate: {
+          action: evaluate,
+          type: "bang",
+          description: "evaluate equation and send"
+        }
+      })
+      .addOutputs({
+        equals: {
+          type: "float"
+        }
+      });
+  </script>
+  
+</body>
+</html>

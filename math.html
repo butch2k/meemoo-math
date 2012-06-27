@@ -15,20 +15,20 @@
       padding:0;
     }
     body {
-      margin: 10px;
+      margin: 10px 0 0 10px;
       font-family: 'Nova Flat', Monaco, monospace;
       font-size: 15px;
     }
     #variables {
       font-size: 12px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   
   <div id="variables">{}</div>
-  <div id="expression">...</div>
-  <div>=</div>
+  <div id="expression">=</div>
   <div id="solution">...</div>
   
   <script type="text/javascript">
@@ -63,7 +63,7 @@
         expression = Parser.parse(s);
         // For some reason immediate evaluate() without values causes this to throw 
         window.setTimeout(evaluate, 500);
-        document.getElementById("expression").innerHTML = expression.toString();
+        document.getElementById("expression").innerHTML = expression.toString() + " =";
       } catch (e) {
         console.log(e);
         expression = null;
@@ -81,7 +81,7 @@
           }
           document.getElementById("solution").innerHTML = solution;
         } catch (e) {
-          document.getElementById("solution").innerHTML = "error evaluating; got your variables?";
+          document.getElementById("solution").innerHTML = "error evaluating; got variables?";
         }
       }
     }

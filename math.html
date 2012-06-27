@@ -111,17 +111,20 @@
         x: {
           action: setX,
           type: "float",
-          description: "x for the equation. this input is hot, which means that evaluate will automatically be called."
+          description: "x for the equation. Evaluate will automatically be called.",
+          hot: true
         },
         y: {
           action: setY,
           type: "float",
-          description: "this input is cold, which means you have to also hit evaluate"
+          description: "you have to hit evaluate after setting this",
+          hot: false
         },
         z: {
           action: setZ,
           type: "float",
-          description: "this input is cold, which means you have to also hit evaluate"
+          description: "you have to hit evaluate after setting this",
+          hot: false
         },
         equation: {
           action: setEquation,
